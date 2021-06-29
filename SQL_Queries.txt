@@ -1,0 +1,58 @@
+/*Q1: Who is the artist with highest number of Track*/
+
+SELECT ar.name, count(t.TrackId) as Numer_Of_Tracks
+FROM  Album al
+JOIN Artist ar
+ON ar.ArtistId = al.ArtistId
+JOIN Track t
+ON al.AlbumId =  t.AlbumId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+
+/***************************************************************************************/
+/*Q2: what is The difference between top 2 artists incme?*/
+
+SELECT a.Name name, SUM ((il.Quantity)*(il.UnitPrice)) total_earning
+FROM Invoice i
+JOIN InvoiceLine il
+ON i.InvoiceId = il.InvoiceId
+JOIN Track t
+ON il.TrackId = t.TrackId
+JOIN Album al
+ON t.AlbumId = al.AlbumId
+JOIN Artist a
+ON a.ArtistId = al.ArtistId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 2;
+/***************************************************************************************/
+
+/*Q3: Who are the top 3 employees in sales*/
+
+SELECT e.EmployeeId,e.LastName, SUM(i.total) total_amount
+FROM Customer c
+JOIN Invoice i
+ON  c.CustomerId = i.CustomerId
+JOIN Employee e
+ON e.EmployeeId = c.SupportRepId
+GROUP BY 1
+ORDER BY 2 DESC;
+
+
+/***************************************************************************************/
+/* Who are th top 10 customers who purchased "JAZZ" Genre */
+select Customer.CustomerId, Customer.LastName, Count (*) as Jazz_Purchases
+from Genre
+join Track
+on track.GenreId =Genre.GenreId
+join InvoiceLine
+on invoiceline.trackid = track.TrackId
+join Invoice
+on invoice.invoiceid = InvoiceLine.invoiceid
+join customer
+on customer.customerid = invoice.CustomerId
+where genre.name = 'Jazz'
+group by FirstName
+ORDER BY 3 DESC
+LIMIT 10;
